@@ -2,6 +2,13 @@
 
 ## 环境配置
 
+配置 pre-commit
+
+```shell
+pre-commit install
+pre-commit run --all-files
+```
+
 解决 cargo deny 的配置问题。
 
 在项目下面初始化配置 `cargo deny init`, 在项目目录下会生成 `deny.toml` 文件。修改一些核心的配置如下：
@@ -56,4 +63,14 @@ cargo run -- text sign -k ./fixtures/ed25519.sk -i ./fixtures/ed25519_input_test
 
 # 使用 ed25519 算法, 根据 ./fixtures/ed25519.pk 文件里面的key, 计算  ./fixtures/ed25519_input_test.txt 文件的 签名信息，判断与给定的签名信息是否匹配
 cargo run -- text verify -k ./fixtures/ed25519.pk -i ./fixtures/ed25519_input_test.txt -f ed25519 -s "qiohbnmjC1VmCs-XuwSn_uKTqkbScYzaAbeEOGC8rdpMNPNwoFU3hq6FMwOomiZ6_7cFzNz1vfcVZ2vr03GaBg"
+```
+
+## http 静态文件服务
+
+```shell
+# 启动服务
+cargo run -- http serve -d . -p 9090
+
+curl http://127.0.0.1:9090/fixtures/index.html
+curl curl http://127.0.0.1:9090/tower/fixtures/index.html
 ```

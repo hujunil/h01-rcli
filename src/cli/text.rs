@@ -4,10 +4,10 @@ use std::fmt;
 use std::path::PathBuf;
 use std::str::FromStr;
 
-use crate::CmdExecutor;
-
 use super::verify_file;
 use super::verify_path;
+use crate::process::text::{process_text_key_generate, process_text_sign, process_text_verify};
+use crate::CmdExecutor;
 
 #[derive(Debug, Parser)]
 pub enum TextSubCommand {
@@ -106,7 +106,7 @@ impl CmdExecutor for TextSignOpts {
         println!("info: {:?}", self);
         let mut reader = crate::get_reader(&self.input)?;
         let key = crate::get_content(&self.key)?;
-        let sig = crate::process::text::process_text_sign(&mut reader, &key, self.format)?;
+        let sig = process_text_sign(&mut reader, &key, self.format)?;
         // Output the signature in URL-safe base64 format
         let encoded = URL_SAFE_NO_PAD.encode(sig);
         println!("{}", encoded);
@@ -120,8 +120,7 @@ impl CmdExecutor for TextVerifyOpts {
         let mut reader = crate::get_reader(&self.input)?;
         let key = crate::get_content(&self.key)?;
         let decoded = URL_SAFE_NO_PAD.decode(self.signature.as_bytes())?;
-        let verified =
-            crate::process::text::process_text_verify(&mut reader, &key, &decoded, self.format)?;
+        let verified = process_text_verify(&mut reader, &key, &decoded, self.format)?;
         if verified {
             println!("✓ Signature verified");
         } else {
@@ -134,7 +133,7 @@ impl CmdExecutor for TextVerifyOpts {
 impl CmdExecutor for KeyGenerateOpts {
     async fn execute(self) -> anyhow::Result<()> {
         println!("info: {:?}", self);
-        let keys = crate::process::text::process_text_key_generate(self.format)?;
+        let keys = process_text_key_generate(self.format)?;
         // 将key写入到文件中
         for (filename, content) in keys {
             let path = self.directory.join(filename);

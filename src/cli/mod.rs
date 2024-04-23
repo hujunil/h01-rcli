@@ -1,6 +1,7 @@
 pub mod base64;
 pub mod csv;
 pub mod genpass;
+pub mod http;
 pub mod text;
 
 use anyhow::{anyhow, Result};
@@ -31,6 +32,8 @@ pub enum SubCommand {
         about = "Sign, verify text or generate key pair"
     )]
     Text(TextSubCommand),
+    #[command(subcommand, name = "http", about = "HTTP server")]
+    Http(http::HttpSubCommand),
 }
 
 impl CmdExecutor for SubCommand {
@@ -40,6 +43,7 @@ impl CmdExecutor for SubCommand {
             SubCommand::Base64(opts) => opts.execute().await,
             SubCommand::GenPass(opts) => opts.execute().await,
             SubCommand::Text(opts) => opts.execute().await,
+            SubCommand::Http(opts) => opts.execute().await,
         }
     }
 }

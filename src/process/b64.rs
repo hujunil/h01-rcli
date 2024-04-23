@@ -22,8 +22,8 @@ pub fn process_decode(reader: &mut dyn Read, format: Base64Format) -> Result<Str
     // Remove trailing newline
     let buf = buf.trim();
     let decoded = match format {
-        Base64Format::Standard => STANDARD.decode(&buf)?,
-        Base64Format::UrlSafe => URL_SAFE_NO_PAD.decode(&buf)?,
+        Base64Format::Standard => STANDARD.decode(buf)?,
+        Base64Format::UrlSafe => URL_SAFE_NO_PAD.decode(buf)?,
     };
     Ok(String::from_utf8(decoded)?)
 }
