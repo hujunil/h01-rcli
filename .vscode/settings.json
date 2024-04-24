@@ -1,3 +1,13 @@
 {
-  "cSpell.words": ["dalek", "genpass", "rcli", "urlsafe"]
+  "cSpell.words": [
+    "chacha",
+    "dalek",
+    "genpass",
+    "rcli",
+    "urlsafe",
+    "ciphertext",
+    "hmac",
+    "jsonwebtoken",
+    "chrono"
+  ]
 }

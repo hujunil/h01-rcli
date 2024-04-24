@@ -2,6 +2,7 @@ pub mod base64;
 pub mod csv;
 pub mod genpass;
 pub mod http;
+mod jwt;
 pub mod text;
 
 use anyhow::{anyhow, Result};
@@ -34,6 +35,8 @@ pub enum SubCommand {
     Text(TextSubCommand),
     #[command(subcommand, name = "http", about = "HTTP server")]
     Http(http::HttpSubCommand),
+    #[command(subcommand, name = "jwt", about = "JWT encode or decode")]
+    Jwt(jwt::JwtSubCommand),
 }
 
 impl CmdExecutor for SubCommand {
@@ -44,6 +47,7 @@ impl CmdExecutor for SubCommand {
             SubCommand::GenPass(opts) => opts.execute().await,
             SubCommand::Text(opts) => opts.execute().await,
             SubCommand::Http(opts) => opts.execute().await,
+            SubCommand::Jwt(opts) => opts.execute().await,
         }
     }
 }
